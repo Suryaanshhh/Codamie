@@ -1,7 +1,34 @@
 import React from "react";
 import bgvideo from "/bgfinal.mp4";
 import { useState } from "react";
+import axios from "axios";
 function Login() {
+  const [loginData, setLoginData] = useState({
+    email: "",
+    pass: "",
+  });
+
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setLoginData((prevData) => ({
+      ...prevData,
+      [id]: value,
+    }));
+  };
+
+  const handleLogin = async (e) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/login",
+        loginData
+      );
+      console.log(response);
+      alert("User Login Successfully");
+    } catch (err) {
+      alert(`Error occured :${err}`);
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col justify-center">
       <div className="font-medium bg-white/40 w-[500px] backdrop-blur-sm m-auto p-8 text-black rounded-xl">
@@ -23,14 +50,18 @@ function Login() {
               className="w-full bg-transparent border border-black"
               id="email"
               type="email"
+              value={loginData.email}
+              onChange={handleChange}
             />
             <input
               className="w-full bg-transparent border border-black"
               id="pass"
               type="text"
+              value={loginData.password}
+              onChange={handleChange}
             />
             <button
-              onClick={() => {}}
+              onClick={handleLogin}
               className="bg-white/50 rounded px-4 py-1 border-2 border-white/50 hover:border-orange-400 hover:bg-orange-200"
             >
               {" "}
